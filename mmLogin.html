@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MetaMask Login</title>
+    <script src="https://cdn.jsdelivr.net/npm/@metamask/detect-provider"></script>
+</head>
+<body>
+    <script>
+        async function connectMetaMask() {
+            const provider = await detectEthereumProvider();
+            
+            if (provider) {
+                try {
+                    const accounts = await provider.request({ method: 'eth_requestAccounts' });
+                    // Redirect to custom URL scheme with the wallet address
+                    window.location.href = `corona://wallet/${accounts[0]}`;
+                } catch (error) {
+                    console.error('User denied account access:', error);
+                }
+            } else {
+                console.error('MetaMask not detected');
+            }
+        }
+
+        connectMetaMask();
+    </script>
+</body>
+</html>
